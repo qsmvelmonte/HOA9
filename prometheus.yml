@@ -1,0 +1,34 @@
+---
+
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates in Ubuntu
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install updates in CENTOS
+    yum:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: install wget in CENTOS
+    yum:
+      name: wget
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+- hosts: ubuntu
+  become: true
+  roles:
+    - ubuntu
+
+- hosts: centOS
+  become: true
+  roles:
+    - centOS
